@@ -44,4 +44,13 @@ router.post('/signup', (req, res) => {
     });
 });
 
+router.get('/delete', loginChecker.isLogin, (req, res) => {
+    db.client.collection(process.env.COLLECTION_USER).deleteOne({id: req.user.id}, (err, delRes) => {
+        if (err) throw err;
+
+        console.log("[USER][DELETE] | id : " + req.user.id);
+        res.send("회원탈퇴완료");
+    });
+});
+
 module.exports = router;

@@ -8,17 +8,16 @@ const db = require('./db.js');
 
 module.exports = () => {
     passport.serializeUser((user, done) => {
-        console.log("SERIALIZE | _id : " + user._id);
+        console.log("[PASSPORT][SERIALIZE] | _id : " + user._id);
         done(null, user._id);
     });
     
     passport.deserializeUser((id, done) => {
-        console.log("DESERIALIZE | _id : " + id);
-
         db.client.collection(process.env.COLLECTION_USER).findOne({_id: ObjectId(id)}, (err, user) => {
             if (err) throw err;
 
-            console.log("DESERIALIZE | user : " + user);
+            console.log("[PASSPORT][DESERIALIZE] | _id : " + id);
+            console.log("[PASSPORT][DESERIALIZE] | user : " + user);
             done(null, user);
         });
     });
