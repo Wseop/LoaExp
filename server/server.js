@@ -22,6 +22,7 @@ passportConfig();
 
 // router
 app.use('/user', require('./router/user.js'));
+app.use('/characters', require('./router/characters.js'));
 app.use('/abyssDungeon', require('./router/abyssDungeon.js'));
 app.use('/chaosDungeon', require('./router/chaosDungeon.js'));
 app.use('/chaosGate', require('./router/chaosGate.js'));
