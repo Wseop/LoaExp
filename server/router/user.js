@@ -8,7 +8,7 @@ const db = require('../db.js');
 
 router.post('/login', passport.authenticate('local', {failureRedirect: '/user/fail'}), (req, res) => {
     console.log("[USER][LOGIN] | id : " + req.body.id);
-    res.send("로그인 성공");
+    res.send(req.body.id);
 });
 
 router.get('/fail', (req, res) => {
@@ -43,7 +43,7 @@ router.post('/signup', (req, res) => {
                     if (err) throw err;
 
                     console.log("[USER][SIGNUP] | id : " + userInfo.id);
-                    res.send("회원가입 성공");
+                    res.send(userInfo.id);
                 });
             });
         } else {
