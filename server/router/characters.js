@@ -29,8 +29,8 @@ router.put('/add', loginChecker.isLogin, (req, res) => {
         newCharacterList.push(newCharacter);
 
         // db update
-        let newDocument = {$set: {userId: req.user.id, list: newCharacterList}};
-        db.client.collection(process.env.COLLECTION_CHARACTER).updateOne({userId: req.user.id}, newDocument, (err, updateRes) => {
+        let newDocument = {userId: req.user.id, list: newCharacterList};
+        db.client.collection(process.env.COLLECTION_CHARACTER).updateOne({userId: req.user.id}, {$set: newDocument}, (err, updateRes) => {
             if (err) throw err;
 
             res.send(newCharacterList);
@@ -56,8 +56,8 @@ router.put('/edit', loginChecker.isLogin, (req, res) => {
             }
         }
         // db update
-        let newDocument = {$set: {userId: req.user.id, list: characterList}};
-        db.client.collection(process.env.COLLECTION_CHARACTER).updateOne({userId: req.user.id}, newDocument, (err, updateRes) => {
+        let newDocument = {userId: req.user.id, list: characterList};
+        db.client.collection(process.env.COLLECTION_CHARACTER).updateOne({userId: req.user.id}, {$set: newDocument}, (err, updateRes) => {
             if (err) throw err;
 
             res.send(characterList);
@@ -81,8 +81,8 @@ router.delete('/', loginChecker.isLogin, (req, res) => {
             }
         });
         // db update
-        let newDocument = {$set: {userId: req.user.id, list: newCharacterList}};
-        db.client.collection(process.env.COLLECTION_CHARACTER).updateOne({userId: req.user.id}, newDocument, (err, updateRes) => {
+        let newDocument = {userId: req.user.id, list: newCharacterList};
+        db.client.collection(process.env.COLLECTION_CHARACTER).updateOne({userId: req.user.id}, {$set: newDocument}, (err, updateRes) => {
             if (err) throw err;
 
             res.send(newCharacterList);
