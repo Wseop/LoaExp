@@ -13,7 +13,7 @@ router.get('/', loginChecker.isLogin, (req, res) => {
         let characterList = findRes.list;
         res.send(characterList);
 
-        console.log("[CHARACTER][GET]");
+        console.log("[CHARACTER][READ]");
     });
 });
 
@@ -35,7 +35,7 @@ router.put('/add', loginChecker.isLogin, (req, res) => {
 
             res.send(newCharacterList);
             
-            console.log("[CHARACTER][ADD]");
+            console.log("[CHARACTER][CREATE]");
         });
     });
 });
@@ -62,7 +62,7 @@ router.put('/edit', loginChecker.isLogin, (req, res) => {
 
             res.send(characterList);
 
-            console.log("[CHARACTER][EDIT]");
+            console.log("[CHARACTER][UPDATE]");
         });
     });
 });

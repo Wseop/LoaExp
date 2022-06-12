@@ -12,7 +12,7 @@ router.get('/', loginChecker.isLogin, (req, res) => {
 
         res.send(findRes);
 
-        console.log("[CHAOSDUNGEON][GET]");
+        console.log("[CHAOSDUNGEON][READ]");
     });
 });
 
@@ -23,7 +23,7 @@ router.get('/character', loginChecker.isLogin, (req, res) => {
 
         res.send(findRes);
 
-        console.log("[CHAOSDUNGEON][GET][CHARACTER]");
+        console.log("[CHAOSDUNGEON][READ][CHARACTER]");
     });
 });
 
@@ -34,7 +34,7 @@ router.get('/date', loginChecker.isLogin, (req, res) => {
 
         res.send(findRes);
 
-        console.log("[CHARACTER][GET][DATE]");
+        console.log("[CHARACTER][READ][DATE]");
     });
 });
 
@@ -61,9 +61,10 @@ router.post('/', loginChecker.isLogin, (req, res) => {
     db.client.collection(process.env.COLLECTION_CHAOSDUNGEON).insertOne(newDocument, (err, insertRes) => {
         if (err) throw err;
 
+        newDocument._id = insertRes.insertedId;
         res.send(newDocument);
 
-        console.log("[CHARACTER][ADD]");
+        console.log("[CHARACTER][CREATE]");
     });
 });
 
@@ -90,9 +91,10 @@ router.put('/', loginChecker.isLogin, (req, res) => {
     db.client.collection(process.env.COLLECTION_CHAOSDUNGEON).updateOne({_id: ObjectId(req.body._id)}, {$set: newDocument}, (err, updateRes) => {
         if (err) throw err;
 
+        newDocument._id = req.body._id;
         res.send(newDocument);
 
-        console.log("[CHARACTER][EDIT]");
+        console.log("[CHARACTER][UPDATE]");
     });
 });
 
@@ -101,7 +103,7 @@ router.delete('/', loginChecker.isLogin, (req, res) => {
     db.client.collection(process.env.COLLECTION_CHAOSDUNGEON).deleteOne({_id: ObjectId(req.body._id)}, (err, deleteRes) => {
         if (err) throw err;
 
-        res.send(true);
+        res.send(req.body._id);
 
         console.log("[CHARACTER][DELETE]");
     });
