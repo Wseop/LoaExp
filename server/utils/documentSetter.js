@@ -10,7 +10,8 @@ async function setItems(type, body) {
         items.destruction = body.destruction;
         items.protection = body.protection;
         items.leapStone = body.leapStone;
-        items.ticket = body.ticket;
+        items.hallTicket = body.hallTicket;
+        items.cubeTicket = body.cubeTicket;
         items.jewel = body.jewel;
     } else if (type === "guardian") {
         items.destruction = body.destruction;
@@ -19,13 +20,31 @@ async function setItems(type, body) {
     } else if (type === "chaosGate") {
         items.secretMap = body.secretMap;
     } else if (type === "ghostShip") {
-
+        items.honorShard = body.honorShard;
+        items.destruction = body.destruction;
+        items.protection = body.protection;
+        items.solarGrace = body.solarGrace;
+        items.solarBlessing = body.solarBlessing;
+        items.solarProtection = body.solarProtection;
     } else if (type === "fieldBoss") {
-
+        items.destruction = body.destruction;
+        items.protection = body.protection;
+        items.solarGrace = body.solarGrace;
+        items.solarBlessing = body.solarBlessing;
+        items.solarProtection = body.solarBlessing;
+        items.jewel = body.jewel;
     } else if (type === "secretMap") {
-
+        items.silling = body.silling;
+        items.gold = body.gold;
+        items.solarGrace = body.solarGrace;
+        items.solarBlessing = body.solarBlessing;
+        items.solarProtection = body.solarProtection;
+        items.honorShard = body.honorShard;
     } else if (type === "abyssDungeon") {
-
+        items.spearOfLight = body.spearOfLight;
+        items.crystalOfOrder = body.crystalOfOrder;
+        items.sphereOfBrilliance = body.sphereOfBrilliance;
+        items.bookOfJudgement = body.bookOfJudgement;
     } else if (type === "commander") {
 
     } else if (type === "epona") {
