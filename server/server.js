@@ -23,15 +23,7 @@ passportConfig();
 // router
 app.use('/user', require('./router/user.js'));
 app.use('/characters', require('./router/characters.js'));
-app.use('/abyssDungeon', require('./router/abyssDungeon.js'));
-app.use('/chaosDungeon', require('./router/chaosDungeon.js'));
-app.use('/chaosGate', require('./router/chaosGate.js'));
-app.use('/commander', require('./router/commander.js'));
-app.use('/epona', require('./router/epona.js'));
-app.use('/fieldBoss', require('./router/fieldBoss.js'));
-app.use('/ghostShip', require('./router/ghostShip.js'));
-app.use('/guardian', require('./router/guardian.js'));
-app.use('/secretMap', require('./router/secretMap.js'));
+app.use('/rewards', require('./router/rewards.js'));
 
 app.listen(process.env.PORT, () => {
     console.log("Listening on " + process.env.PORT);
