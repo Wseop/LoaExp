@@ -41,7 +41,7 @@ router.get('/:type/date', loginChecker.isLogin, (req, res) => {
 
 // 데이터 추가
 router.post('/:type', loginChecker.isLogin, async (req, res) => {
-    let newDocument = await documentSetter.set(req.params.type, req.user.id, req.body);
+    let newDocument = await documentSetter.set(req.user.id, req.body);
 
     db.client.collection(req.params.type).insertOne(newDocument, (err, insertRes) => {
         if (err) throw err;
@@ -55,7 +55,7 @@ router.post('/:type', loginChecker.isLogin, async (req, res) => {
 
 // 데이터 수정
 router.put('/:type', loginChecker.isLogin, async (req, res) => {
-    let newDocument = await documentSetter.set(req.params.type, req.user.id, req.body);
+    let newDocument = await documentSetter.set(req.user.id, req.body);
 
     db.client.collection(req.params.type).updateOne({_id: ObjectId(req.body._id)}, {$set: newDocument}, (err, updateRes) => {
         if (err) throw err;
