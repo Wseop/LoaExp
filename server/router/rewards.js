@@ -7,74 +7,74 @@ const db = require('../db.js');
 const ObjectId = require('mongodb').ObjectId;
 
 // 전체 조회
-router.get('/:type', loginChecker.isLogin, (req, res) => {
-    db.client.collection(req.params.type).find({userId: req.user.id}).toArray((err, findRes) => {
+router.get('/:content', loginChecker.isLogin, (req, res) => {
+    db.client.collection(req.params.content).find({userId: req.user.id}).toArray((err, findRes) => {
         if (err) throw err;
 
         res.send(findRes);
 
-        console.log("[READ] | " + req.params.type);
+        console.log("[REWARDS][READ] | " + req.params.content);
     });
 });
 
 // 캐릭터명으로 조회
-router.get('/:type/character', loginChecker.isLogin, (req, res) => {
-    db.client.collection(req.params.type).find({userId: req.user.id, character: req.body.character}).toArray((err, findRes) => {
+router.get('/:content/character', loginChecker.isLogin, (req, res) => {
+    db.client.collection(req.params.content).find({userId: req.user.id, character: req.body.character}).toArray((err, findRes) => {
         if (err) throw err;
 
         res.send(findRes);
 
-        console.log("[READ][CHARACTER] | " + req.params.type);
+        console.log("[REWARDS][READ][CHARACTER] | " + req.params.content);
     });
 });
 
 // 날짜로 조회
-router.get('/:type/date', loginChecker.isLogin, (req, res) => {
-    db.client.collection(req.params.type).find({userId: req.user.id, year: req.body.year, ww: req.body.ww}).toArray((err, findRes) => {
+router.get('/:content/date', loginChecker.isLogin, (req, res) => {
+    db.client.collection(req.params.content).find({userId: req.user.id, year: req.body.year, month: req.body.month}).toArray((err, findRes) => {
         if (err) throw err;
 
         res.send(findRes);
 
-        console.log("[READ][DATE] | " + req.params.type);
+        console.log("[REWARDS][READ][DATE] | " + req.params.content);
     });
 });
 
 // 데이터 추가
-router.post('/:type', loginChecker.isLogin, async (req, res) => {
-    let newDocument = await documentSetter.set(req.user.id, req.body);
+router.post('/:content', loginChecker.isLogin, async (req, res) => {
+    let newDocument = await documentSetter.setReward(req.user.id, req.body);
 
-    db.client.collection(req.params.type).insertOne(newDocument, (err, insertRes) => {
+    db.client.collection(req.params.content).insertOne(newDocument, (err, insertRes) => {
         if (err) throw err;
 
         newDocument._id = insertRes.insertedId;
         res.send(newDocument);
 
-        console.log("[CREATE] | " + req.params.type);
+        console.log("[REWARDS][CREATE] | " + req.params.content);
     });
 });
 
 // 데이터 수정
-router.put('/:type', loginChecker.isLogin, async (req, res) => {
-    let newDocument = await documentSetter.set(req.user.id, req.body);
+router.put('/:content', loginChecker.isLogin, async (req, res) => {
+    let newDocument = await documentSetter.setReward(req.user.id, req.body);
 
-    db.client.collection(req.params.type).updateOne({_id: ObjectId(req.body._id)}, {$set: newDocument}, (err, updateRes) => {
+    db.client.collection(req.params.content).updateOne({_id: ObjectId(req.body._id)}, {$set: newDocument}, (err, updateRes) => {
         if (err) throw err;
 
         newDocument._id = req.body._id;
         res.send(newDocument);
 
-        console.log("[UPDATE] | " + req.params.type);
+        console.log("[REWARDS][UPDATE] | " + req.params.content);
     });
 });
 
 // 데이터 삭제
-router.delete('/:type', loginChecker.isLogin, (req, res) => {
-    db.client.collection(req.params.type).deleteOne({_id: ObjectId(req.body._id)}, (err, deleteRes) => {
+router.delete('/:content', loginChecker.isLogin, (req, res) => {
+    db.client.collection(req.params.content).deleteOne({_id: ObjectId(req.body._id)}, (err, deleteRes) => {
         if (err) throw err;
 
         res.send(req.body._id);
 
-        console.log("[DELETE] | " + req.params.type);
+        console.log("[REWARDS][DELETE] | " + req.params.content);
     });
 });
 
