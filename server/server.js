@@ -24,6 +24,7 @@ passportConfig();
 app.use('/user', require('./router/user.js'));
 app.use('/characters', require('./router/characters.js'));
 app.use('/rewards', require('./router/rewards.js'));
+app.use('/accessory', require('./router/accessory.js'));
 
 app.listen(process.env.PORT, () => {
     console.log("Listening on " + process.env.PORT);
