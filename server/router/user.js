@@ -12,7 +12,7 @@ router.post('/login', passport.authenticate('local', {failureRedirect: '/user/fa
 });
 
 router.get('/fail', (req, res) => {
-    res.send("로그인 실패");
+    res.send(false);
 });
 
 router.get('/logout', loginChecker.isLogin, (req, res) => {
@@ -21,7 +21,7 @@ router.get('/logout', loginChecker.isLogin, (req, res) => {
     req.logout((err) => {
         if (err) throw err;
 
-        res.send("로그아웃");
+        res.send(true);
     });
 });
 
@@ -47,7 +47,7 @@ router.post('/signup', (req, res) => {
                 });
             });
         } else {
-            res.send("회원가입 실패(이미 존재하는 id)");
+            res.send(false);
         }
     });
 });
@@ -62,7 +62,7 @@ router.delete('/', loginChecker.isLogin, (req, res) => {
             if (err) throw err;
 
             console.log("[USER][DELETE] | id : " + req.user.id);
-            res.send("회원탈퇴완료");
+            res.send(req.user.id);
         });
     });
 });
