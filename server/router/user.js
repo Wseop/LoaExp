@@ -52,19 +52,24 @@ router.post('/signup', (req, res) => {
     });
 });
 
-router.delete('/', loginChecker.isLogin, (req, res) => {
-    // user 삭제
-    db.client.collection(process.env.COLLECTION_USER).deleteOne({id: req.user.id}, (err, delRes) => {
-        if (err) throw err;
+router.delete('/', loginChecker.isLogin, async (req, res) => {
+    try {
+        // user 삭제
+        await db.client.collection(process.env.COLLECTION_USER).deleteOne({id: req.user.id});
 
-        // characters collection에서 document 삭제
-        db.client.collection(process.env.COLLECTION_CHARACTER).deleteOne({userId: req.user.id}, (err, delCharRes) => {
-            if (err) throw err;
+        // 모든 collection에서 삭제한 user의 document 삭제
+        const collections = ["abyssDungeon", "abyssDungeonChallenge", "accessories", "chaosDungeon", "chaosGate", 
+        "characters", "commander", "epona", "fieldBoss", "ghostShip", 
+        "guardian", "guardianChallenge", "secretMap"];
+        await Promise.all(collections.map(async (collection, i) => {
+            await db.client.collection(collection).deleteMany({userId: req.user.id});
+        }));
 
-            console.log("[USER][DELETE] | id : " + req.user.id);
-            res.send(req.user.id);
-        });
-    });
+        console.log("[USER][DELETE] | " + req.user.id);
+        res.send(req.user.id);
+    } catch (err) {
+        console.log(err);
+    }
 });
 
 module.exports = router;
