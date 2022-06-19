@@ -49,12 +49,7 @@ router.put('/edit', loginChecker.isLogin, (req, res) => {
         let characterList = findRes.list;
         let newCharacter = {name: req.body.newName, level: req.body.newLevel, class: req.body.newClass};
         // 데이터 수정
-        for (let i = 0; i < characterList.length; i++) {
-            if (characterList[i].name === req.body.name) {
-                characterList[i] = newCharacter;
-                break;
-            }
-        }
+        characterList[req.body.index] = newCharacter;
         // db update
         let newDocument = {userId: req.user.id, list: characterList};
         db.client.collection(process.env.COLLECTION_CHARACTER).updateOne({userId: req.user.id}, {$set: newDocument}, (err, updateRes) => {
@@ -73,19 +68,14 @@ router.delete('/', loginChecker.isLogin, (req, res) => {
         if (err) throw err;
 
         let characterList = findRes.list;
-        let newCharacterList = [];
-        // 삭제할 캐릭터를 제외하고 새로운 배열로 복사
-        characterList.map((character, i) => {
-            if (character.name !== req.body.name) {
-                newCharacterList.push(character);
-            }
-        });
+        // 배열에서 캐릭터 삭제
+        characterList.splice(req.body.index, 1);
         // db update
-        let newDocument = {userId: req.user.id, list: newCharacterList};
+        let newDocument = {userId: req.user.id, list: characterList};
         db.client.collection(process.env.COLLECTION_CHARACTER).updateOne({userId: req.user.id}, {$set: newDocument}, (err, updateRes) => {
             if (err) throw err;
 
-            res.send(newCharacterList);
+            res.send(characterList);
 
             console.log("[CHARACTER][DELETE]");
         });
