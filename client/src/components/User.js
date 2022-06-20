@@ -106,7 +106,7 @@ function User() {
     const [message, setMessage] = useState(null);
 
     return (
-        <div className="mt-3 container w-25">
+        <div className="mt-3 container" style={{width: "500px"}}>
             <div className="mb-2 btn-group w-100" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" className="btn-check" name="btnradio" id="btnradio1" autoComplete="off" />
                 <label className="btn btn-outline-secondary" htmlFor="btnradio1" onClick={() => {setLoginState(true)}}>로그인</label>

@@ -89,7 +89,7 @@ function Characters() {
     }, []);
 
     return (
-        <div className="mt-3 w-25 container" id="characters">
+        <div className="mt-3 container" id="characters" style={{width: "500px"}}>
             <p className="fs-1 fw-bold text-center">보유 캐릭터</p>
             <button className="m-1 w-100 btn btn-lg btn-primary">전체 현황 보기</button>
             {
