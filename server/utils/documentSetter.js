@@ -16,11 +16,15 @@ documentSetter.setAccessory = async (id, body) => {
     let accessory = {};
 
     accessory.userId = id;
-    accessory.character = body.character;
-    accessory.year = body.year;
-    accessory.month = body.month;
-    accessory.content = body.content;
-    accessory.detail = body.detail;
+    accessory.date = new Date();
+    accessory.grade = body.grade;
+    accessory.part = body.part;
+    accessory.quality = body.quality;
+    accessory.ability1 = body.ability1;
+    accessory.ability2 = body.ability2;
+    accessory.engrave1 = body.engrave1;
+    accessory.engrave2 = body.engrave2;
+    accessory.from = body.from;
 };
 
 module.exports = documentSetter;

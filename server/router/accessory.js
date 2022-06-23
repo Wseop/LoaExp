@@ -17,27 +17,16 @@ router.get('/', loginChecker.isLogin, (req, res) => {
     });
 });
 
-// 캐릭터명으로 조회
-router.get('/chatacter', loginChecker.isLogin, (req, res) => {
-    db.client.collection(process.env.COLLECTION_ACCESSORIES).find({userId: req.user.id, character: req.body.character}).toArray((err, findRes) => {
-        if (err) throw err;
-
-        res.send(findRes);
-
-        console.log("[ACC][READ][CHARACTER]");
-    });
-});
-
 // 날짜로 조회
-router.get('/date', loginChecker.isLogin, (req, res) => {
-    db.client.collection(process.env.COLLECTION_ACCESSORIES).find({userId: req.user.id, year: req.body.year, month: req.body.month}).toArray((err, findRes) => {
-        if (err) throw err;
+// router.get('/date', loginChecker.isLogin, (req, res) => {
+//     db.client.collection(process.env.COLLECTION_ACCESSORIES).find({userId: req.user.id, year: req.body.year, month: req.body.month}).toArray((err, findRes) => {
+//         if (err) throw err;
 
-        res.send(findRes);
+//         res.send(findRes);
 
-        console.log("[ACC][READ][DATE]");
-    });
-});
+//         console.log("[ACC][READ][DATE]");
+//     });
+// });
 
 // 데이터 추가
 router.post('/', loginChecker.isLogin, async (req, res) => {
