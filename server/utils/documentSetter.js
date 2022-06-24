@@ -25,6 +25,8 @@ documentSetter.setAccessory = async (id, body) => {
     accessory.engrave1 = body.engrave1;
     accessory.engrave2 = body.engrave2;
     accessory.from = body.from;
+
+    return accessory;
 };
 
 module.exports = documentSetter;
