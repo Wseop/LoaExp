@@ -31,8 +31,9 @@ function AddAccessory() {
     const [inputEngrave2, setInputEngrave2] = useState(null);
     const [inputFrom, setInputFrom] = useState(null);
     const [message, setMessage] = useState(null);
+    let formData = new FormData();
 
-    const add = () => {
+    const addOne = () => {
         if (inputGrade == null || inputPart == null || inputQual == null || inputAbility1 == null || inputEngrave1 == null || inputEngrave2 == null || inputFrom == null) {
             setMessage("입력값을 확인하세요.");
         } else if (inputPart === "목걸이" && inputAbility2 == null) {
@@ -62,9 +63,25 @@ function AddAccessory() {
             })
         }
     }
+    const addFile = () => {
+        axios.post(process.env.REACT_APP_SERVER + "/accessory/html", formData,
+        {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            withCredentials: true
+        })
+        .then((res) => {
+            window.location.replace("/accessory");
+        })
+        .catch((err) => {
+            setMessage("확장자를 확인하세요.");
+        })
+    }
 
     return (
         <div className="mt-3">
+            <p className="m-1 fw-bold text-start">[ 직접 추가 ]</p>
             <div className="input-group">
                 <input placeholder="등급" type="text" className="form-control" list="gradeList" onChange={(event) => {setInputGrade(event.target.value)}}/>
                 <input placeholder="부위" type="text" className="form-control" list="partList" onChange={(event) => {setInputPart(event.target.value)}}/>
@@ -77,7 +94,7 @@ function AddAccessory() {
                 <input placeholder="각인1" type="text" className="form-control" list="engraveList" onChange={(event) => {setInputEngrave1(event.target.value)}}/>
                 <input placeholder="각인2" type="text" className="form-control" list="engraveList" onChange={(event) => {setInputEngrave2(event.target.value)}}/>
                 <input placeholder="획득처" type="text" className="form-control" list="fromList" onChange={(event) => {setInputFrom(event.target.value)}}/>
-                <button className="btn btn-outline-primary" onClick={() => {add()}}>추가</button>
+                <button className="btn btn-outline-primary" onClick={() => {addOne()}}>추가</button>
                 
                 <datalist id="gradeList">
                     {
@@ -125,6 +142,14 @@ function AddAccessory() {
                     }
                 </datalist>
             </div>
+
+            <div className="m-2"></div>
+            <p className="m-1 fw-bold text-start">[ html 파일로 추가 ]</p>
+            <div className="input-group">
+                <input type="file" accept=".html" className="form-control" onChange={(event) => {formData.append("html", event.target.files[0])}}/>
+                <button className="btn btn-outline-primary" onClick={() => {addFile()}}>추가</button>
+            </div>
+
             {
                 message == null ? null : <div className="mt-3 fw-bold" style={{color: "#FF0000"}}>{message}</div>
             }
