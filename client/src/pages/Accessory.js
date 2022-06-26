@@ -22,34 +22,34 @@ function Menu(props) {
 }
 
 function AddAccessory() {
-    const [selectGrade, setSelectGrade] = useState(null);
-    const [selectPart, setSelectPart] = useState(null);
-    const [selectQual, setSelectQual] = useState(null);
-    const [selectAbility1, setSelectAbility1] = useState(null);
-    const [selectAbility2, setSelectAbility2] = useState(null);
-    const [selectEngrave1, setSelectEngrave1] = useState(null);
-    const [selectEngrave2, setSelectEngrave2] = useState(null);
-    const [selectFrom, setSelectFrom] = useState(null);
+    const [inputGrade, setInputGrade] = useState(null);
+    const [inputPart, setInputPart] = useState(null);
+    const [inputQual, setInputQual] = useState(null);
+    const [inputAbility1, setInputAbility1] = useState(null);
+    const [inputAbility2, setInputAbility2] = useState(null);
+    const [inputEngrave1, setInputEngrave1] = useState(null);
+    const [inputEngrave2, setInputEngrave2] = useState(null);
+    const [inputFrom, setInputFrom] = useState(null);
     const [message, setMessage] = useState(null);
 
     const add = () => {
-        if (selectGrade == null || selectPart == null || selectQual == null || selectAbility1 == null || selectEngrave1 == null || selectEngrave2 == null || selectFrom == null) {
+        if (inputGrade == null || inputPart == null || inputQual == null || inputAbility1 == null || inputEngrave1 == null || inputEngrave2 == null || inputFrom == null) {
             setMessage("입력값을 확인하세요.");
-        } else if (selectPart === "목걸이" && selectAbility2 == null) {
+        } else if (inputPart === "목걸이" && inputAbility2 == null) {
             setMessage("입력값을 확인하세요.");
-        } else if (Number(selectQual) < 0 || Number(selectQual) > 100) {
+        } else if (Number(inputQual) < 0 || Number(inputQual) > 100) {
             setMessage("입력값을 확인하세요.");
         } else {
             axios.post(process.env.REACT_APP_SERVER + "/accessory", 
             {
-                grade: selectGrade,
-                part: selectPart,
-                quality: selectQual,
-                ability1: selectAbility1,
-                ability2: selectAbility2,
-                engrave1: selectEngrave1,
-                engrave2: selectEngrave2,
-                from: selectFrom
+                grade: inputGrade,
+                part: inputPart,
+                quality: inputQual,
+                ability1: inputAbility1,
+                ability2: inputAbility2,
+                engrave1: inputEngrave1,
+                engrave2: inputEngrave2,
+                from: inputFrom
             },
             {
                 withCredentials: true
@@ -66,17 +66,17 @@ function AddAccessory() {
     return (
         <div className="mt-3">
             <div className="input-group">
-                <input placeholder="등급" type="text" className="form-control" list="gradeList" onChange={(event) => {setSelectGrade(event.target.value)}}/>
-                <input placeholder="부위" type="text" className="form-control" list="partList" onChange={(event) => {setSelectPart(event.target.value)}}/>
-                <input placeholder="품질" type="number" className="form-control" onChange={(event) => {setSelectQual(event.target.value)}} />
-                <input placeholder="특성1" type="text" className="form-control" list="abilityList" onChange={(event) => {setSelectAbility1(event.target.value)}}/>
+                <input placeholder="등급" type="text" className="form-control" list="gradeList" onChange={(event) => {setInputGrade(event.target.value)}}/>
+                <input placeholder="부위" type="text" className="form-control" list="partList" onChange={(event) => {setInputPart(event.target.value)}}/>
+                <input placeholder="품질" type="number" className="form-control" onChange={(event) => {setInputQual(event.target.value)}} />
+                <input placeholder="특성1" type="text" className="form-control" list="abilityList" onChange={(event) => {setInputAbility1(event.target.value)}}/>
                 {
-                    selectPart === "목걸이" ? <input placeholder="특성2" type="text" className="form-control" list="abilityList" onChange={(event) => {setSelectAbility2(event.target.value)}}/>
+                    inputPart === "목걸이" ? <input placeholder="특성2" type="text" className="form-control" list="abilityList" onChange={(event) => {setInputAbility2(event.target.value)}}/>
                                             : <input placeholder="특성2" type="text" className="form-control" list="abilityList" disabled />
                 }
-                <input placeholder="각인1" type="text" className="form-control" list="engraveList" onChange={(event) => {setSelectEngrave1(event.target.value)}}/>
-                <input placeholder="각인2" type="text" className="form-control" list="engraveList" onChange={(event) => {setSelectEngrave2(event.target.value)}}/>
-                <input placeholder="획득처" type="text" className="form-control" list="fromList" onChange={(event) => {setSelectFrom(event.target.value)}}/>
+                <input placeholder="각인1" type="text" className="form-control" list="engraveList" onChange={(event) => {setInputEngrave1(event.target.value)}}/>
+                <input placeholder="각인2" type="text" className="form-control" list="engraveList" onChange={(event) => {setInputEngrave2(event.target.value)}}/>
+                <input placeholder="획득처" type="text" className="form-control" list="fromList" onChange={(event) => {setInputFrom(event.target.value)}}/>
                 <button className="btn btn-outline-primary" onClick={() => {add()}}>추가</button>
                 
                 <datalist id="gradeList">
@@ -132,6 +132,14 @@ function AddAccessory() {
     )
 }
 
+function EditAccessory() {
+    return (
+        <div className="mt-3">
+            
+        </div>
+    )
+}
+
 function Accessory() {
     const [select, setSelect] = useState(0);
 
@@ -144,7 +152,8 @@ function Accessory() {
             <div className="mt-3 container text-center" id="accessory">
                 <Menu setSelect={setSelect} />
                 {
-                    select === 1 ? <AddAccessory /> : null
+                    select === 1 ? <AddAccessory /> : 
+                    select === 2 ? <EditAccessory /> : null
                 }
             </div>
         )
