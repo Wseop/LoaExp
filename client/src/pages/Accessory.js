@@ -14,9 +14,18 @@ const from = accessory.from;
 function Menu(props) {
     return (
         <div className="container" id="menu-accessory">
+            <button className="btn btn-warning" onClick={() => {props.setSelect(0)}}>조회</button>
             <button className="btn btn-primary" onClick={() => {props.setSelect(1)}}>추가</button>
             <button className="btn btn-success" onClick={() => {props.setSelect(2)}}>수정</button>
             <button className="btn btn-danger" onClick={() => {props.setSelect(3)}}>삭제</button>
+        </div>
+    )
+}
+
+function Statistics() {
+    return (
+        <div className="mt-3">
+
         </div>
     )
 }
@@ -158,9 +167,188 @@ function AddAccessory() {
 }
 
 function EditAccessory() {
+    const [accessories, setAccessories] = useState([]);
+    const [message, setMessage] = useState(null);
+
+    const edit = (_id, newData) => {
+        if (newData.grade === "" || newData.part === "" || newData.quality === "" || newData.ability1 === "" || newData.engrave1 === "" || newData.engrave2 === "" || 
+            newData.from === "") {
+            setMessage("입력값을 확인하세요.");
+        } else if (newData.part === "목걸이" && newData.ability2 === "") {
+            setMessage("입력값을 확인하세요.");
+        } else if (newData.part !== "목걸이" && (newData.ability2 === "" || newData.ability2 != null)) {
+            setMessage("입력값을 확인하세요.");
+        } else if (Number(newData.quality) < 0 || Number(newData.quality) > 100) {
+            setMessage("입력값을 확인하세요.");
+        } else {
+            axios.put(process.env.REACT_APP_SERVER + "/accessory",
+            {
+                _id: _id,
+                grade: newData.grade,
+                part: newData.part,
+                quality: newData.quality,
+                ability1: newData.ability1,
+                ability2: newData.ability2,
+                engrave1: newData.engrave1,
+                engrave2: newData.engrave2,
+                from: newData.from
+            },
+            {
+                withCredentials: true
+            })
+            .then((res) => {
+                window.location.replace("/accessory");
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        }
+    };
+
+    useEffect(() => {
+        axios.get(process.env.REACT_APP_SERVER + "/accessory",
+        {
+            withCredentials: true
+        })
+        .then((res) => {
+            setAccessories(res.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }, []);
+
     return (
         <div className="mt-3">
-            
+            {
+                message == null ? null : <div className="mt-3 fw-bold" style={{color: "#FF0000"}}>{message}</div>
+            }
+            {
+                accessories.map((accessory, i) => {
+                    return (
+                        <div key={i} className="input-group">
+                            <input placeholder="등급" type="text" className="form-control" list="gradeList" defaultValue={accessory.grade} 
+                                   onChange={(event) => {accessory.grade = event.target.value}} />
+                            <input placeholder="부위" type="text" className="form-control" list="partList" defaultValue={accessory.part}
+                                   onChange={(event) => {accessory.part = event.target.value}} />
+                            <input placeholder="품질" type="number" className="form-control" defaultValue={accessory.quality} 
+                                   onChange={(event) => {accessory.quality = event.target.value}} />
+                            <input placeholder="특성1" type="text" className="form-control" list="abilityList" defaultValue={accessory.ability1} 
+                                   onChange={(event) => {accessory.ability1 = event.target.value}} />
+                            <input placeholder="특성2" type="text" className="form-control" list="abilityList" defaultValue={accessory.ability2} 
+                                   onChange={(event) => {accessory.ability2 = event.target.value}} />
+                            <input placeholder="각인1" type="text" className="form-control" list="engraveList" defaultValue={accessory.engrave1}
+                                   onChange={(event) => {accessory.engrave1 = event.target.value}} />
+                            <input placeholder="각인2" type="text" className="form-control" list="engraveList" defaultValue={accessory.engrave2} 
+                                   onChange={(event) => {accessory.engrave2 = event.target.value}} />
+                            <input placeholder="획득처" type="text" className="form-control" list="fromList" defaultValue={accessory.from}
+                                   onChange={(event) => {accessory.from = event.target.value}} />
+                            <button className="btn btn-outline-primary" onClick={() => {edit(accessory._id, accessory)}}>수정</button>
+                        </div>
+                    )
+                })
+            }
+
+            <datalist id="gradeList">
+                {
+                    grade.map((v, i) => {
+                        return (
+                            <option key={i} value={v} />
+                        )
+                    })
+                }
+            </datalist>
+            <datalist id="partList">
+                {
+                    part.map((v, i) => {
+                        return (
+                            <option key={i} value={v} />
+                        )
+                    })
+                }
+            </datalist>
+            <datalist id="abilityList">
+                {
+                    ability.map((v, i) => {
+                        return (
+                            <option key={i} value={v} />
+                        )
+                    })
+                }
+            </datalist>
+            <datalist id="engraveList">
+                {
+                    engrave.map((v, i) => {
+                        return (
+                            <option key={i} value={v} />
+                        )
+                    })
+                }
+            </datalist>
+            <datalist id="fromList">
+                {
+                    from.map((v, i) => {
+                        return (
+                            <option key={i} value={v} />
+                        )
+                    })
+                }
+            </datalist>
+        </div>
+    )
+}
+
+function DeleteAccessory() {
+    const [accessories, setAccessories] = useState([]);
+
+    const del = (_id) => {
+        axios.delete(process.env.REACT_APP_SERVER + "/accessory", 
+        {
+            data: {
+                _id: _id
+            },
+            withCredentials: true
+        })
+        .then((res) => {
+            window.location.replace("/accessory");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    };
+
+    useEffect(() => {
+        axios.get(process.env.REACT_APP_SERVER + "/accessory", 
+        {
+            withCredentials: true
+        })
+        .then((res) => {
+            setAccessories(res.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }, []);
+
+    return (
+        <div className="mt-3">
+            {
+                accessories.map((accessory, i) => {
+                    return (
+                        <div key={i} className="input-group">
+                            <input placeholder="등급" type="text" className="form-control" list="gradeList" defaultValue={accessory.grade} disabled />
+                            <input placeholder="부위" type="text" className="form-control" list="partList" defaultValue={accessory.part} disabled />
+                            <input placeholder="품질" type="number" className="form-control" defaultValue={accessory.quality} disabled />
+                            <input placeholder="특성1" type="text" className="form-control" list="abilityList" defaultValue={accessory.ability1} disabled />
+                            <input placeholder="특성2" type="text" className="form-control" list="abilityList" defaultValue={accessory.ability2} disabled />
+                            <input placeholder="각인1" type="text" className="form-control" list="engraveList" defaultValue={accessory.engrave1} disabled />
+                            <input placeholder="각인2" type="text" className="form-control" list="engraveList" defaultValue={accessory.engrave2} disabled />
+                            <input placeholder="획득처" type="text" className="form-control" list="fromList" defaultValue={accessory.from} disabled />
+                            <button className="btn btn-outline-danger" onClick={() => {del(accessory._id)}}>삭제</button>
+                        </div>
+                    )
+                })
+            }
         </div>
     )
 }
@@ -177,8 +365,10 @@ function Accessory() {
             <div className="mt-3 container text-center" id="accessory">
                 <Menu setSelect={setSelect} />
                 {
+                    select === 0 ? <Statistics /> :
                     select === 1 ? <AddAccessory /> : 
-                    select === 2 ? <EditAccessory /> : null
+                    select === 2 ? <EditAccessory /> : 
+                    select === 3 ? <DeleteAccessory /> : null
                 }
             </div>
         )
