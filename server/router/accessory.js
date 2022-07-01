@@ -7,9 +7,8 @@ const db = require('../db.js');
 const ObjectId = require('mongodb').ObjectId;
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs').promises;
 const cheerio = require('cheerio');
-const { send } = require('process');
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
@@ -75,7 +74,7 @@ router.post('/html', loginChecker.isLogin, async (req, res) => {
             res.status(400).send(false);
         } else {
             // 전송받은 파일 로드
-            let $ = cheerio.load(fs.readFileSync('./public/temp/' + req.file.filename));
+            let $ = cheerio.load(await fs.readFile('./public/temp/' + req.file.filename));
             // 우선 response 후 처리
             res.status(200).send(true);
             // 모든 열을 순회하며 데이터 추가 진행
@@ -98,7 +97,7 @@ router.post('/html', loginChecker.isLogin, async (req, res) => {
             }));
            
             // 완료되면 파일 삭제
-            fs.unlinkSync('./public/temp/' + req.file.filename);
+            await fs.unlink('./public/temp/' + req.file.filename);
 
             console.log("[ACC][CREATE][by html]");
         }
